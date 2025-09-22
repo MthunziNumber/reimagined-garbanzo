@@ -16,6 +16,7 @@ class FinancialRecord(models.Model):
 
     class Meta:
         unique_together = ('user', 'year', 'month')
+        ordering = ['user', 'year', 'month'] 
 
     def __str__(self):
         return f"{self.user.name} - {self.month} {self.year}: {self.amount}"

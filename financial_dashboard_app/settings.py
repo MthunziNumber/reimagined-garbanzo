@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-xtq84-6mh65zh_usjj&8w((b_5fhl)3l^2o7vs3d=k4#3u)hx$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -38,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'uploader.apps.UploaderConfig',
+    'corsheaders',
 ]
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -51,7 +53,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'financial_dashboard.urls'
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+ROOT_URLCONF = 'financial_dashboard_app.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +74,7 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = 'financial_dashboard.wsgi.application'
+WSGI_APPLICATION = 'financial_dashboard_app.wsgi.application'
 
 
 # Database
@@ -128,6 +133,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+# File uploads
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "uploader" / "static"]
 
@@ -135,4 +144,10 @@ STATICFILES_DIRS = [BASE_DIR / "uploader" / "static"]
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SESSION_COOKIE_SECURE = False  # Set True in production
+CSRF_COOKIE_SECURE = False     # Set True in production
+X_FRAME_OPTIONS = 'DENY'
 

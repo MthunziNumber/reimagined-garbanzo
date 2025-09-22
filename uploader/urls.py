@@ -1,9 +1,14 @@
 from django.urls import path
-from . import views
+from .views import (
+    DashboardView,
+    GoogleLoginView,
+    UploadFinancialDataView,
+    GetFinancialDataView,
+)
 
 urlpatterns = [
-    path('api/financial/upload/<int:user_id>/<int:year>/', views.upload_financial_data),
-    path('api/finances/<int:user_id>/<int:year>/', views.get_financial_data),
-    path('api/google-login/', views.google_login),
-    path('', views.dashboard, name='dashboard'),
+    path('', DashboardView.as_view(), name='dashboard'),
+    path('api/google-login/', GoogleLoginView.as_view(), name='google_login'),
+    path('api/financial/upload/<int:user_id>/<int:year>/', UploadFinancialDataView.as_view(), name='upload_financial_data'),
+    path('api/finances/<int:user_id>/<int:year>/', GetFinancialDataView.as_view(), name='get_financial_data'),
 ]
