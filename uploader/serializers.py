@@ -19,12 +19,12 @@ class FinancialRecordUploadSerializer(serializers.Serializer):
 
         try:
             df = pd.read_excel(value)
+            print("Columns in uploaded file:", df.columns)
         except Exception as e:
             raise serializers.ValidationError(f"Invalid Excel file: {str(e)}")
 
         if not {'Month', 'Amount'}.issubset(df.columns):
             raise serializers.ValidationError("Excel file must contain 'Month' and 'Amount' columns")
 
-        # Reset file pointer after reading
         value.seek(0)
         return value

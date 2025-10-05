@@ -14,7 +14,13 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
     });
 
     const result = await response.json();
-    document.getElementById('message').textContent = result.message || result.error || '';
+
+
+    let msg = result.message || result.error || '';
+    if (!msg && result.file && Array.isArray(result.file)) {
+        msg = result.file[0];
+    }
+    document.getElementById('message').textContent = msg;
 
     if (response.ok) {
         fetchData(userId, year);
@@ -25,7 +31,7 @@ async function fetchData(userId, year) {
     const response = await fetch(`/api/finances/${userId}/${year}/`);
     const data = await response.json();
 
-    // Populate table
+
     const tbody = document.querySelector('#dataTable tbody');
     tbody.innerHTML = '';
     data.forEach(row => {
@@ -34,7 +40,7 @@ async function fetchData(userId, year) {
         tbody.appendChild(tr);
     });
 
-    // Draw bar chart
+
     const ctx = document.getElementById('barChart').getContext('2d');
     if (window.barChartInstance) window.barChartInstance.destroy();
     window.barChartInstance = new Chart(ctx, {

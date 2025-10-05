@@ -50,15 +50,13 @@ class UploadFinancialDataView(APIView):
 
         user = get_object_or_404(User, pk=user_id)
 
-        # Read the Excel file
         df = pd.read_excel(file_obj)
 
-        # Validate month and amount values
         invalid_months = df[~df['Month'].between(1, 12)]
         if not invalid_months.empty:
             return Response({"error": "Months must be between 1 and 12"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Prepare FinancialRecord instances for bulk creation
+
         records = [
             FinancialRecord(
                 user=user,
